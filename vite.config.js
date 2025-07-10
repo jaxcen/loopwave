@@ -13,5 +13,8 @@ export default defineConfig({
     assetsDir: 'assets'
   },
   publicDir: 'public',
-  assetsInclude: ['**/*.mp4', '**/*.webp', '**/*.png']
+  assetsInclude: ['**/*.mp4', '**/*.webp', '**/*.png'],
+  define: {
+    __BASE_URL__: process.env.NODE_ENV === 'production' ? '"/loopwave/"' : '"/"'
+  }
 }) 

@@ -4,7 +4,7 @@
     <header class="header_container" :class="{ 'header_visible': showNavbar }">
       <div class="header_logo">
         <a href="#" class="header_logoLink typo-flow-caption" aria-label="Refresh Page">
-          <img src="/loop-logo.png" alt="Loop" class="logo-image">
+          <img :src="getAssetPath('loop-logo.png')" alt="Loop" class="logo-image">
         </a>
       </div>
       <div class="header_jumpLinks">
@@ -38,7 +38,7 @@
             <div class="js-flowContainer hero_flowContainer">
               <div class="hero_flowEffectImg">
                 <div class="hero-logo-container">
-                  <img src="/loop-logo.png" alt="Loop" class="hero-logo">
+                  <img :src="getAssetPath('loop-logo.png')" alt="Loop" class="hero-logo">
                 </div>
                 <div class="hero-subtitle">
                   开启你的下一场冒险
@@ -76,7 +76,7 @@
       <section class="video-section_videoSection" id="overview" data-section="overview">
         <div class="video-section_anchorTarget"></div>
         <div class="video-section_backgroundImageContainer">
-          <img src="/视频资源/10001.webp" alt="Section Background">
+          <img :src="getAssetPath('视频资源/10001.webp')" alt="Section Background">
         </div>
         <div class="video-section_videoContainer">
           <div class="video-section_videoWrapper">
@@ -88,7 +88,7 @@
                 muted 
                 playsinline 
                 preload="auto"
-                poster="/视频资源/videoframe_4004.png"
+                :poster="getAssetPath('视频资源/videoframe_4004.png')"
                 :src="getVideoPath('video.mp4')"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
@@ -161,7 +161,7 @@
               <div v-for="(item, itemIndex) in column.items" :key="itemIndex" class="gallery_item">
                 <div class="gallery_media">
                   <div class="phone_mockup">
-                    <img src="/iphone-样机.png" alt="iPhone样机" class="phone_frame">
+                    <img :src="getAssetPath('iphone-样机.png')" alt="iPhone样机" class="phone_frame">
                     <div class="phone_screen">
                       <video autoplay loop muted playsinline preload="auto" :src="getNewVideoPath(item.video)">
                       </video>
@@ -274,12 +274,19 @@ export default {
     ])
 
     // 方法
+    const getAssetPath = (path) => {
+      const baseUrl = import.meta.env.BASE_URL || '/'
+      return `${baseUrl}${path}`
+    }
+
     const getVideoPath = (filename) => {
-      return `/视频资源/${filename}`
+      const baseUrl = import.meta.env.BASE_URL || '/'
+      return `${baseUrl}视频资源/${filename}`
     }
 
     const getNewVideoPath = (filename) => {
-      return `/视频资源新/${filename}`
+      const baseUrl = import.meta.env.BASE_URL || '/'
+      return `${baseUrl}视频资源新/${filename}`
     }
 
     const playMainVideo = () => {
@@ -318,6 +325,7 @@ export default {
       capabilities,
       capabilityVideos,
       galleryColumns,
+      getAssetPath,
       getVideoPath,
       getNewVideoPath,
       playMainVideo,
