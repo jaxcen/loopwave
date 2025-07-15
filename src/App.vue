@@ -89,7 +89,7 @@
                 playsinline 
                 preload="auto"
                 :poster="getAssetPath('视频资源/videoframe_4004.png')"
-                :src="getVideoPath('video.mp4')"
+                :src="getNewVideoPath('loopai.mp4')"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
             </button>
