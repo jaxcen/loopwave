@@ -296,18 +296,15 @@ export default {
 
     // 方法
     const getAssetPath = (path) => {
-      const baseUrl = import.meta.env.BASE_URL || '/'
-      return `${baseUrl}${path}`
+      return new URL(`../public/${path}`, import.meta.url).href
     }
 
     const getVideoPath = (filename) => {
-      const baseUrl = import.meta.env.BASE_URL || '/'
-      return `${baseUrl}视频资源/${filename}`
+      return new URL(`../public/视频资源/${filename}`, import.meta.url).href
     }
 
     const getNewVideoPath = (filename) => {
-      const baseUrl = import.meta.env.BASE_URL || '/'
-      return `${baseUrl}视频资源新/${filename}`
+      return new URL(`../public/视频资源新/${filename}`, import.meta.url).href
     }
 
     const playMainVideo = () => {
