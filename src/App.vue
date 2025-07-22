@@ -66,9 +66,7 @@
       <!-- Video Display Section -->
       <section class="video-section_videoSection" id="overview" data-section="overview">
         <div class="video-section_anchorTarget"></div>
-        <div class="video-section_backgroundImageContainer">
-          <img :src="getAssetPath('videoframe_4004.png')" alt="Section Background">
-        </div>
+        <!-- Removed the backgroundImageContainer with Section Background -->
         <div class="video-section_videoContainer">
           <div class="video-section_videoWrapper">
             <button aria-label="Play video" class="video-section_posterContainer" @click="playMainVideo">
@@ -79,7 +77,7 @@
                 :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
-                :poster="getAssetPath('videoframe_4004.png')"
+                :poster="getAssetPath('id=overview封面.png')"
                 :src="getNewVideoPath('loopai.mp4')"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
