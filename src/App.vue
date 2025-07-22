@@ -41,7 +41,13 @@
                   <img :src="getAssetPath('loop-logo.png')" alt="Loop" class="hero-logo">
                 </div>
                 <div class="hero-subtitle">
-                  开启你的下一场冒险
+                  Loop crafts your story. You direct life.
+                </div>
+                <div class="hero-cta">
+                  <button class="invitation-btn">Apply for invitation code</button>
+                  <div class="hero-branding">
+                    <span class="typo-small-details">From LoopAI, for the future.</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -85,13 +91,24 @@
                 ref="mainVideo"
                 :autoplay="isMainVideoPlaying" 
                 loop 
-                muted 
+                :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
-                :poster="getAssetPath('视频资源/videoframe_4004.png')"
+:poster="getAssetPath('视频资源/10001.webp')"
                 :src="getNewVideoPath('loopai.mp4')"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
+              <!-- YouTube风格音量控制按钮 -->
+              <div class="video-section_volumeControl" v-if="isMainVideoPlaying">
+                <button 
+                  class="volume-btn"
+                  @click="toggleMute"
+                  :aria-label="isVideoMuted ? '取消静音' : '静音'"
+                >
+                  <span class="material-icons" v-if="!isVideoMuted">volume_up</span>
+                  <span class="material-icons" v-else>volume_off</span>
+                </button>
+              </div>
             </button>
           </div>
         </div>
@@ -190,6 +207,9 @@
             <a href="#" target="_blank" rel="noreferrer" class="footer_link typo-material-body-small">隐私政策</a>
             <a href="#" target="_blank" rel="noreferrer" class="footer_link typo-material-body-small">服务条款</a>
           </div>
+          <div class="footer_branding">
+            <span class="typo-small-details">From LoopAI, for the future.</span>
+          </div>
         </div>
       </section>
     </main>
@@ -214,6 +234,7 @@ export default {
     const isMainVideoPlaying = ref(false)
     const selectedCapability = ref(0)
     const showNavbar = ref(false)
+    const isVideoMuted = ref(false)
 
     // 功能数据
     const capabilities = ref([
@@ -300,6 +321,13 @@ export default {
       selectedCapability.value = index
     }
 
+    const toggleMute = () => {
+      isVideoMuted.value = !isVideoMuted.value
+      if (mainVideo.value) {
+        mainVideo.value.muted = isVideoMuted.value
+      }
+    }
+
     // 滚动监听，控制导航栏显示
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
@@ -329,7 +357,9 @@ export default {
       getVideoPath,
       getNewVideoPath,
       playMainVideo,
-      selectCapability
+      selectCapability,
+      isVideoMuted,
+      toggleMute
     }
   }
 }
