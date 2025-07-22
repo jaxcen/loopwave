@@ -296,15 +296,15 @@ export default {
 
     // 方法
     const getAssetPath = (path) => {
-      return new URL(`../public/${path}`, import.meta.url).href
+      return path
     }
 
     const getVideoPath = (filename) => {
-      return new URL(`../public/视频资源/${filename}`, import.meta.url).href
+      return `视频资源/${filename}`
     }
 
     const getNewVideoPath = (filename) => {
-      return new URL(`../public/视频资源新/${filename}`, import.meta.url).href
+      return `视频资源新/${filename}`
     }
 
     const playMainVideo = () => {
