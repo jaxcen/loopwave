@@ -82,7 +82,7 @@
       <section class="video-section_videoSection" id="overview" data-section="overview">
         <div class="video-section_anchorTarget"></div>
         <div class="video-section_backgroundImageContainer">
-          <img :src="getAssetPath('视频资源/10001.webp')" alt="Section Background">
+          <img :src="getAssetPath('id=overview封面.png')" alt="Section Background">
         </div>
         <div class="video-section_videoContainer">
           <div class="video-section_videoWrapper">
@@ -94,7 +94,7 @@
                 :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
-:poster="getAssetPath('视频资源/10001.webp')"
+:poster="getAssetPath('id=overview封面.png')"
                 :src="getNewVideoPath('loopai.mp4')"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
