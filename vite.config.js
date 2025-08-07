@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '',
+  base: '/loopwave/',
   server: {
     port: 3000,
     open: true
@@ -13,8 +13,8 @@ export default defineConfig({
     assetsDir: 'assets'
   },
   publicDir: 'public',
-  assetsInclude: ['**/*.mp4', '**/*.webp', '**/*.png'],
+  assetsInclude: ['**/*.mp4', '**/*.webp', '**/*.png', '**/*.mov'],
   define: {
-    __BASE_URL__: '"/"'
+    __BASE_URL__: '"/loopwave/"'
   }
 }) 

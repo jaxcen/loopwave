@@ -73,12 +73,13 @@
               <video 
                 ref="mainVideo"
                 :autoplay="isMainVideoPlaying" 
-                loop 
+                :loop="!shouldPlaySequence"
                 :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
                 :poster="getAssetPath('id=overview封面.png')"
-                :src="getNewVideoPath('loopai.mp4')"
+                :src="currentVideoSrc"
+                @ended="onMainVideoEnded"
               ></video>
               <div class="video-section_playIcon" v-if="!isMainVideoPlaying"></div>
               <!-- YouTube style volume control button -->
@@ -215,6 +216,9 @@ export default {
     const selectedCapability = ref(0)
     const showNavbar = ref(false)
     const isVideoMuted = ref(false)
+    const shouldPlaySequence = ref(false)
+    const currentVideoSrc = ref('视频资源新/loopai.mp4')
+    const isPlayingReviewVideo = ref(false)
 
     // Features data
     const capabilities = ref([
@@ -289,8 +293,43 @@ export default {
 
     const playMainVideo = () => {
       if (mainVideo.value) {
+        // 重置到开始状态
+        shouldPlaySequence.value = true
+        isPlayingReviewVideo.value = false
+        currentVideoSrc.value = '视频资源新/loopai.mp4'
         isMainVideoPlaying.value = true
-        mainVideo.value.play()
+        
+        // 等待视频源更新后再播放
+        setTimeout(() => {
+          if (mainVideo.value) {
+            mainVideo.value.play()
+          }
+        }, 100)
+      }
+    }
+
+    const onMainVideoEnded = () => {
+      if (shouldPlaySequence.value && !isPlayingReviewVideo.value) {
+        // 第一个视频播放完毕，切换到 loop review.mov
+        isPlayingReviewVideo.value = true
+        currentVideoSrc.value = '视频资源新/loop review.mov'
+        
+        // 等待视频源更新后播放
+        setTimeout(() => {
+          if (mainVideo.value) {
+            mainVideo.value.play()
+          }
+        }, 100)
+      } else if (shouldPlaySequence.value && isPlayingReviewVideo.value) {
+        // loop review.mov 播放完毕，重新开始循环
+        isPlayingReviewVideo.value = false
+        currentVideoSrc.value = '视频资源新/loopai.mp4'
+        
+        setTimeout(() => {
+          if (mainVideo.value) {
+            mainVideo.value.play()
+          }
+        }, 100)
       }
     }
 
@@ -336,7 +375,11 @@ export default {
       playMainVideo,
       selectCapability,
       isVideoMuted,
-      toggleMute
+      toggleMute,
+      shouldPlaySequence,
+      currentVideoSrc,
+      isPlayingReviewVideo,
+      onMainVideoEnded
     }
   }
 }
