@@ -73,7 +73,7 @@
               <video 
                 ref="mainVideo"
                 :autoplay="isMainVideoPlaying" 
-                :loop="!shouldPlaySequence"
+                :loop="false"
                 :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
@@ -299,9 +299,13 @@ export default {
         currentVideoSrc.value = '视频资源新/loopai.mp4'
         isMainVideoPlaying.value = true
         
+        // 确保视频不循环
+        mainVideo.value.loop = false
+        
         // 等待视频源更新后再播放
         setTimeout(() => {
           if (mainVideo.value) {
+            mainVideo.value.load() // 重新加载视频
             mainVideo.value.play()
           }
         }, 100)
@@ -309,24 +313,30 @@ export default {
     }
 
     const onMainVideoEnded = () => {
+      console.log('视频播放结束', { shouldPlaySequence: shouldPlaySequence.value, isPlayingReviewVideo: isPlayingReviewVideo.value })
+      
       if (shouldPlaySequence.value && !isPlayingReviewVideo.value) {
-        // 第一个视频播放完毕，切换到 loop review.mov
+        // 第一个视频 loopai.mp4 播放完毕，切换到 loop review.mov
+        console.log('切换到 loop review.mov')
         isPlayingReviewVideo.value = true
         currentVideoSrc.value = '视频资源新/loop review.mov'
         
         // 等待视频源更新后播放
         setTimeout(() => {
           if (mainVideo.value) {
+            mainVideo.value.load() // 重新加载视频
             mainVideo.value.play()
           }
         }, 100)
       } else if (shouldPlaySequence.value && isPlayingReviewVideo.value) {
         // loop review.mov 播放完毕，重新开始循环
+        console.log('重新开始播放 loopai.mp4')
         isPlayingReviewVideo.value = false
         currentVideoSrc.value = '视频资源新/loopai.mp4'
         
         setTimeout(() => {
           if (mainVideo.value) {
+            mainVideo.value.load() // 重新加载视频
             mainVideo.value.play()
           }
         }, 100)
