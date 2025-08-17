@@ -319,7 +319,7 @@ export default {
         // 第一个视频 loopai.mp4 播放完毕，切换到 loop review.mov
         console.log('切换到 loop review.mov')
         isPlayingReviewVideo.value = true
-        currentVideoSrc.value = '视频资源新/loop review.mov'
+        currentVideoSrc.value = 'http://t1475ppyh.hd-bkt.clouddn.com/loop%20review%20%281%29.mov'
         
         // 等待视频源更新后播放
         setTimeout(() => {
