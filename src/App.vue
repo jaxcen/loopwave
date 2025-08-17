@@ -77,6 +77,7 @@
                 :muted="isVideoMuted"
                 playsinline 
                 preload="auto"
+                crossorigin="anonymous"
                 :poster="getAssetPath('id=overview封面.png')"
                 :src="currentVideoSrc"
                 @ended="onMainVideoEnded"
@@ -306,7 +307,11 @@ export default {
         setTimeout(() => {
           if (mainVideo.value) {
             mainVideo.value.load() // 重新加载视频
-            mainVideo.value.play()
+            mainVideo.value.play().then(() => {
+              console.log('loopai.mp4 开始播放成功')
+            }).catch(error => {
+              console.error('loopai.mp4 播放失败:', error)
+            })
           }
         }, 100)
       }
@@ -316,8 +321,8 @@ export default {
       console.log('视频播放结束', { shouldPlaySequence: shouldPlaySequence.value, isPlayingReviewVideo: isPlayingReviewVideo.value })
       
       if (shouldPlaySequence.value && !isPlayingReviewVideo.value) {
-        // 第一个视频 loopai.mp4 播放完毕，切换到 loop review.mov
-        console.log('切换到 loop review.mov')
+        // 第一个视频 loopai.mp4 播放完毕，切换到 OSS 视频
+        console.log('切换到 OSS 视频')
         isPlayingReviewVideo.value = true
         currentVideoSrc.value = 'http://t1475ppyh.hd-bkt.clouddn.com/loop%20review%20%281%29.mov'
         
@@ -325,11 +330,31 @@ export default {
         setTimeout(() => {
           if (mainVideo.value) {
             mainVideo.value.load() // 重新加载视频
-            mainVideo.value.play()
+            
+            // 添加加载完成事件监听
+            const onLoadedData = () => {
+              console.log('OSS 视频加载完成，开始播放')
+              mainVideo.value.play().then(() => {
+                console.log('OSS 视频开始播放成功')
+              }).catch(error => {
+                console.error('OSS 视频播放失败:', error)
+              })
+              mainVideo.value.removeEventListener('loadeddata', onLoadedData)
+            }
+            
+            // 添加错误处理
+            const onError = (e) => {
+              console.error('OSS 视频加载错误:', e)
+              console.error('错误详情:', mainVideo.value.error)
+              mainVideo.value.removeEventListener('error', onError)
+            }
+            
+            mainVideo.value.addEventListener('loadeddata', onLoadedData)
+            mainVideo.value.addEventListener('error', onError)
           }
         }, 100)
       } else if (shouldPlaySequence.value && isPlayingReviewVideo.value) {
-        // loop review.mov 播放完毕，重新开始循环
+        // OSS 视频播放完毕，重新开始循环
         console.log('重新开始播放 loopai.mp4')
         isPlayingReviewVideo.value = false
         currentVideoSrc.value = '视频资源新/loopai.mp4'
@@ -337,7 +362,9 @@ export default {
         setTimeout(() => {
           if (mainVideo.value) {
             mainVideo.value.load() // 重新加载视频
-            mainVideo.value.play()
+            mainVideo.value.play().catch(error => {
+              console.error('重新播放 loopai.mp4 失败:', error)
+            })
           }
         }, 100)
       }
