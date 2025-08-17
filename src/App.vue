@@ -293,6 +293,7 @@ export default {
     }
 
     const playMainVideo = () => {
+      console.log('=== 开始播放主视频 ===')
       if (mainVideo.value) {
         // 重置到开始状态
         shouldPlaySequence.value = true
@@ -302,6 +303,12 @@ export default {
         
         // 确保视频不循环
         mainVideo.value.loop = false
+        
+        console.log('初始状态设置完成:', { 
+          shouldPlaySequence: shouldPlaySequence.value, 
+          isPlayingReviewVideo: isPlayingReviewVideo.value,
+          currentVideoSrc: currentVideoSrc.value
+        })
         
         // 等待视频源更新后再播放
         setTimeout(() => {
@@ -318,13 +325,19 @@ export default {
     }
 
     const onMainVideoEnded = () => {
-      console.log('视频播放结束', { shouldPlaySequence: shouldPlaySequence.value, isPlayingReviewVideo: isPlayingReviewVideo.value })
+      console.log('=== 视频播放结束事件触发 ===')
+      console.log('当前状态:', { 
+        shouldPlaySequence: shouldPlaySequence.value, 
+        isPlayingReviewVideo: isPlayingReviewVideo.value,
+        currentVideoSrc: currentVideoSrc.value
+      })
       
       if (shouldPlaySequence.value && !isPlayingReviewVideo.value) {
+        console.log('✓ 条件匹配：准备切换到第二个视频')
         // 第一个视频 loopai.mp4 播放完毕，切换到压缩后的 review 视频
         console.log('切换到压缩后的 review 视频')
         isPlayingReviewVideo.value = true
-        currentVideoSrc.value = 'public/视频资源新/loop review (1)-VEED.mp4'
+        currentVideoSrc.value = '视频资源新/loop review (1)-VEED.mp4'
         
         // 等待视频源更新后播放
         setTimeout(() => {
@@ -354,6 +367,7 @@ export default {
           }
         }, 100)
       } else if (shouldPlaySequence.value && isPlayingReviewVideo.value) {
+        console.log('✓ 条件匹配：第二个视频播放完毕，准备循环')
         // 压缩后的 review 视频播放完毕，重新开始循环
         console.log('重新开始播放 loopai.mp4')
         isPlayingReviewVideo.value = false
@@ -367,6 +381,13 @@ export default {
             })
           }
         }, 100)
+      } else {
+        console.log('✗ 条件不匹配，视频播放结束但不进行切换')
+        console.log('详细状态:', {
+          shouldPlaySequence: shouldPlaySequence.value,
+          isPlayingReviewVideo: isPlayingReviewVideo.value,
+          isMainVideoPlaying: isMainVideoPlaying.value
+        })
       }
     }
 
