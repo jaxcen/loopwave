@@ -324,7 +324,7 @@ export default {
         // 第一个视频 loopai.mp4 播放完毕，切换到 OSS 视频
         console.log('切换到 OSS 视频')
         isPlayingReviewVideo.value = true
-        currentVideoSrc.value = 'http://t1475ppyh.hd-bkt.clouddn.com/loop%20review%20%281%29.mov'
+        currentVideoSrc.value = 'https://loopwave.oss-cn-hangzhou.aliyuncs.com/loop%20review.mov'
         
         // 等待视频源更新后播放
         setTimeout(() => {
