@@ -321,10 +321,10 @@ export default {
       console.log('视频播放结束', { shouldPlaySequence: shouldPlaySequence.value, isPlayingReviewVideo: isPlayingReviewVideo.value })
       
       if (shouldPlaySequence.value && !isPlayingReviewVideo.value) {
-        // 第一个视频 loopai.mp4 播放完毕，切换到 OSS 视频
-        console.log('切换到 OSS 视频')
+        // 第一个视频 loopai.mp4 播放完毕，切换到压缩后的 review 视频
+        console.log('切换到压缩后的 review 视频')
         isPlayingReviewVideo.value = true
-        currentVideoSrc.value = 'https://loopwave.oss-cn-hangzhou.aliyuncs.com/loop%20review.mov'
+        currentVideoSrc.value = 'public/视频资源新/loop review (1)-VEED.mp4'
         
         // 等待视频源更新后播放
         setTimeout(() => {
@@ -333,18 +333,18 @@ export default {
             
             // 添加加载完成事件监听
             const onLoadedData = () => {
-              console.log('OSS 视频加载完成，开始播放')
+              console.log('压缩后的 review 视频加载完成，开始播放')
               mainVideo.value.play().then(() => {
-                console.log('OSS 视频开始播放成功')
+                console.log('压缩后的 review 视频开始播放成功')
               }).catch(error => {
-                console.error('OSS 视频播放失败:', error)
+                console.error('压缩后的 review 视频播放失败:', error)
               })
               mainVideo.value.removeEventListener('loadeddata', onLoadedData)
             }
             
             // 添加错误处理
             const onError = (e) => {
-              console.error('OSS 视频加载错误:', e)
+              console.error('压缩后的 review 视频加载错误:', e)
               console.error('错误详情:', mainVideo.value.error)
               mainVideo.value.removeEventListener('error', onError)
             }
@@ -354,7 +354,7 @@ export default {
           }
         }, 100)
       } else if (shouldPlaySequence.value && isPlayingReviewVideo.value) {
-        // OSS 视频播放完毕，重新开始循环
+        // 压缩后的 review 视频播放完毕，重新开始循环
         console.log('重新开始播放 loopai.mp4')
         isPlayingReviewVideo.value = false
         currentVideoSrc.value = '视频资源新/loopai.mp4'
